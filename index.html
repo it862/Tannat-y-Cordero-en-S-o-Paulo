@@ -237,7 +237,19 @@
                                 <option value="UY">🇺🇾 Uruguay (UYU)</option>
                                 <option value="AR">🇦🇷 Argentina (ARS)</option>
                             </select>
-                            <input id="f-quantity" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Cant. Entradas" required="" type="number" min="1" max="10" value="1" />
+                            
+                            <div class="w-full bg-background-dark border border-primary/30 rounded-lg px-4 flex items-center justify-between text-white">
+                                <button type="button" id="q-minus" class="text-accent-gold text-2xl font-bold w-10 h-full hover:text-white transition-colors">−</button>
+                                <span id="qty-n" class="font-bold text-lg pointer-events-none">1</span>
+                                <input type="hidden" id="f-quantity" value="1" />
+                                <button type="button" id="q-plus" class="text-accent-gold text-2xl font-bold w-10 h-full hover:text-white transition-colors">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Total display -->
+                        <div class="flex justify-between items-center py-2 border-t border-primary/20 mt-4">
+                            <span class="text-slate-400 text-sm">Total a pagar:</span>
+                            <span class="text-2xl font-black text-accent-gold">R$<span id="total-amount">150</span></span>
                         </div>
                         <p id="msg-load" class="text-accent-gold text-center text-sm font-bold animate-pulse hidden"></p>
                         <p id="msg-error" class="text-red-500 text-center text-sm font-bold hidden"></p>
@@ -487,7 +499,24 @@
     UNIT_PRICE: 150,
     CURRENCY: 'BRL',
     EVENT_ID: 'tannat_cordero_sp',
+    MAX_QTY: 10
   };
+
+  let qty = 1;
+
+  document.getElementById('q-minus').addEventListener('click', () => {
+    if (qty > 1) { qty--; updateTotal(); }
+  });
+  
+  document.getElementById('q-plus').addEventListener('click', () => {
+    if (qty < CONFIG.MAX_QTY) { qty++; updateTotal(); }
+  });
+
+  function updateTotal() {
+    document.getElementById('qty-n').textContent = qty;
+    document.getElementById('f-quantity').value = qty;
+    document.getElementById('total-amount').textContent = (CONFIG.UNIT_PRICE * qty).toLocaleString('pt-BR');
+  }
 
   async function initPayment(e) {
     if (e) e.preventDefault();
