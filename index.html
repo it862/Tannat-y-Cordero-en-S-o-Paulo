@@ -221,27 +221,30 @@
                 </div>
                 <div class="bg-primary/10 p-12 flex flex-col justify-center border-l border-primary/20" id="reserve">
                     <h3 class="text-2xl font-bold mb-6 text-center">Reserva tu lugar</h3>
-                    <form action="/webhook/n8n-leads" class="space-y-4" method="POST">
-                        <input name="event" type="hidden" value="tannat_cordero_sp" />
+                    <form id="booking-form" class="space-y-4" onsubmit="initPayment(event)">
                         <div>
-                            <input
-                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
-                                name="name" placeholder="Nombre completo" required="" type="text" />
+                            <input id="f-name" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Nombre completo" required="" type="text" />
                         </div>
                         <div>
-                            <input
-                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
-                                name="email" placeholder="Correo electrónico" required="" type="email" />
+                            <input id="f-email" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Correo electrónico" required="" type="email" />
                         </div>
                         <div>
-                            <input
-                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
-                                name="phone" placeholder="Teléfono / WhatsApp" required="" type="tel" />
+                            <input id="f-phone" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Teléfono / WhatsApp" required="" type="tel" />
                         </div>
-                        <button
-                            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg mt-4"
-                            type="submit">
-                            Continuar al pago
+                        <div class="grid grid-cols-2 gap-4">
+                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none" required="">
+                                <option value="BR">🇧🇷 Brasil (BRL)</option>
+                                <option value="UY">🇺🇾 Uruguay (UYU)</option>
+                                <option value="AR">🇦🇷 Argentina (ARS)</option>
+                            </select>
+                            <input id="f-quantity" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Cant. Entradas" required="" type="number" min="1" max="10" value="1" />
+                        </div>
+                        <p id="msg-load" class="text-accent-gold text-center text-sm font-bold animate-pulse hidden"></p>
+                        <p id="msg-error" class="text-red-500 text-center text-sm font-bold hidden"></p>
+                        
+                        <button id="pay-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg mt-4 flex items-center justify-center gap-2" type="submit">
+                            <span id="btn-txt">Continuar al pago</span>
+                            <span id="spinner" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                         </button>
                     </form>
                     <div
@@ -477,6 +480,84 @@
             </div>
         </div>
     </footer>
+<script>
+  // CONFIGURACIÓN DE TU n8n
+  const CONFIG = {
+    N8N_WEBHOOK_URL: 'https://TU-N8N.app.n8n.cloud/webhook/evento-reserva', // REEMPLAZA ESTO
+    UNIT_PRICE: 150,
+    CURRENCY: 'BRL',
+    EVENT_ID: 'tannat_cordero_sp',
+  };
+
+  async function initPayment(e) {
+    if (e) e.preventDefault();
+    
+    // UI Setup
+    const payBtn = document.getElementById('pay-btn');
+    const btnTxt = document.getElementById('btn-txt');
+    const spinner = document.getElementById('spinner');
+    const msgLoad = document.getElementById('msg-load');
+    const msgError = document.getElementById('msg-error');
+    
+    payBtn.disabled = true;
+    payBtn.classList.add('opacity-70');
+    btnTxt.style.display = 'none';
+    spinner.classList.remove('hidden');
+    msgError.classList.add('hidden');
+    
+    msgLoad.textContent = 'Preparando tu reserva... un momento 🍷';
+    msgLoad.classList.remove('hidden');
+
+    const fullName = document.getElementById('f-name').value.trim();
+    const [firstName, ...lastNames] = fullName.split(' ');
+    const lastName = lastNames.join(' ') || '.';
+    const qty = parseInt(document.getElementById('f-quantity').value, 10);
+
+    const payload = {
+      event:      CONFIG.EVENT_ID,
+      first_name: firstName,
+      last_name:  lastName,
+      email:      document.getElementById('f-email').value.trim(),
+      phone:      document.getElementById('f-phone').value.trim(),
+      country:    document.getElementById('f-country').value,
+      quantity:   qty,
+      amount:     CONFIG.UNIT_PRICE * qty,
+      currency:   CONFIG.CURRENCY,
+    };
+
+    try {
+      const res = await fetch(CONFIG.N8N_WEBHOOK_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      let data;
+      try { data = await res.json(); } 
+      catch { throw new Error('Respuesta inesperada del servidor. Intenta nuevamente.'); }
+
+      if (!res.ok || data.status === 'error') {
+        throw new Error(data.message || `Error del servidor (${res.status}).`);
+      }
+      if (!data.redirect_url) {
+        throw new Error('No se recibió la URL de pago.');
+      }
+
+      msgLoad.textContent = '¡Listo! Redirigiendo al pago seguro...';
+      window.location.href = data.redirect_url;
+      
+    } catch (err) {
+      payBtn.disabled = false;
+      payBtn.classList.remove('opacity-70');
+      btnTxt.style.display = 'inline';
+      spinner.classList.add('hidden');
+      msgLoad.classList.add('hidden');
+      
+      msgError.textContent = err.message || 'Error al procesar. Por favor intenta nuevamente.';
+      msgError.classList.remove('hidden');
+    }
+  }
+</script>
 </body>
 
 </html>
