@@ -196,8 +196,27 @@
                     </ul>
                     <div class="text-5xl font-black text-white mb-2">R$150<span
                             class="text-sm font-normal text-slate-400">/persona</span></div>
-                    <p class="text-red-400 font-bold text-lg mt-2 animate-pulse">🔥 Quedan solo 23 lugares disponibles
+                    <p class="text-red-400 font-bold text-lg mt-2 animate-pulse">🔥 Quedan solo <span id="spots-left">47</span> lugares disponibles
                     </p>
+                    <script>
+                        // Logic for dynamic available spots counter
+                        const anchorDate = new Date("2026-03-17T00:00:00").getTime(); // Start date
+                        const now = new Date().getTime();
+                        
+                        // Calculate days passed since anchor date
+                        const daysPassed = Math.floor((now - anchorDate) / (1000 * 60 * 60 * 24));
+                        
+                        // Decrease 5 spots every 3 full days
+                        const decreases = Math.floor(daysPassed / 3);
+                        let currentSpots = 47 - (decreases * 5);
+                        
+                        // Stop decreasing when it reaches 19
+                        if (currentSpots < 19) {
+                            currentSpots = 19;
+                        }
+                        
+                        document.getElementById("spots-left").textContent = currentSpots;
+                    </script>
                     <p class="text-slate-400 text-sm mb-8 italic">Precios finales con impuestos incluidos.</p>
                 </div>
                 <div class="bg-primary/10 p-12 flex flex-col justify-center border-l border-primary/20" id="reserve">
