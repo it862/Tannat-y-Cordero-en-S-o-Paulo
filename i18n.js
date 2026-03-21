@@ -75,12 +75,13 @@ const i18nDist = {
     foot_desc: "Dedicados a traer las mejores experiencias culturales y gastronómicas del Río de la Plata a las principales capitales del mundo.",
     foot_contact: "Contacto",
     foot_follow: "Síguenos",
-    foot_rights: "© 2024 São Paulo Festival. Todos los derechos reservados.",
+    foot_rights: "© 2024 São Paulo Festival. Operado por MOLHA & SAFIE LTDA. Todos los derechos reservados.",
     foot_terms: "Términos y condiciones",
     foot_priv: "Política de privacidad",
 
     // Modal
     mod_title: "Pago Seguro",
+    mod_subtitle: "Procesado a nombre de MOLHA & SAFIE LTDA",
     mod_name: "Nombre completo",
     mod_email: "Correo electrónico",
     mod_country: "País",
@@ -172,12 +173,13 @@ const i18nDist = {
     foot_desc: "Dedicados a trazer as melhores experiências culturais e gastronômicas do Rio da Prata para as principais capitais do mundo.",
     foot_contact: "Contato",
     foot_follow: "Siga-nos",
-    foot_rights: "© 2024 São Paulo Festival. Todos os direitos reservados.",
+    foot_rights: "© 2024 São Paulo Festival. Operado por MOLHA & SAFIE LTDA. Todos os direitos reservados.",
     foot_terms: "Termos e condições",
     foot_priv: "Política de privacidade",
 
     // Modal
     mod_title: "Pagamento Seguro",
+    mod_subtitle: "Processado em nome de MOLHA & SAFIE LTDA",
     mod_name: "Nome completo",
     mod_email: "E-mail",
     mod_country: "País",
