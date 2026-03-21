@@ -534,10 +534,8 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_country">País</label>
-                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none" required="">
+                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none pointer-events-none opacity-80" required="">
                                 <option value="BR">🇧🇷 Brasil</option>
-                                <option value="UY">🇺🇾 Uruguay</option>
-                                <option value="AR">🇦🇷 Argentina</option>
                             </select>
                         </div>
                         <div>
@@ -548,7 +546,7 @@
                     
                     <div id="cpf-container" class="transition-all duration-300">
                         <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">CPF <span class="text-red-400">*</span></label>
-                        <input id="f-cpf" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="000.000.000-00" type="text" />
+                        <input id="f-cpf" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="000.000.000-00" type="text" required="" />
                         <p class="text-[10px] text-slate-500 mt-1" data-i18n="mod_cpf_req">Requerido por procesador de pagos (Pagar.me Brasil).</p>
                     </div>
 
