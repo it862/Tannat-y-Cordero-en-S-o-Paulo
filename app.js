@@ -131,7 +131,7 @@
     spinner.classList.remove('hidden');
     msgContainer.classList.add('hidden');
 
-    showMessage('Preparando tu reserva... un momento 🍷', false);
+    showMessage(I18N.get('msg_preparing'), false);
     msgContainer.classList.remove('hidden');
 
     // Datos del formulario
@@ -163,7 +163,7 @@
         return res.json().then(function (data) {
           return { ok: res.ok, status: res.status, data: data };
         }).catch(function () {
-          throw new Error('Respuesta inesperada del servidor. Intenta nuevamente.');
+          throw new Error(I18N.get('msg_unexpected'));
         });
       })
       .then(function (result) {
@@ -173,9 +173,9 @@
           throw new Error(errorMsg);
         }
         if (!result.data.redirect_url) {
-          throw new Error('No se recibió la URL de pago.');
+          throw new Error(I18N.get('msg_no_url'));
         }
-        showMessage('¡Listo! Redirigiendo al pago seguro...', false);
+        showMessage(I18N.get('msg_redirecting'), false);
         window.location.href = result.data.redirect_url;
       })
       .catch(function (err) {
@@ -184,7 +184,7 @@
         btnTxt.style.display = 'inline';
         spinner.classList.add('hidden');
 
-        showMessage(err.message || 'Error al procesar. Por favor intenta nuevamente.', true);
+        showMessage(err.message || I18N.get('msg_error'), true);
       });
   };
 
