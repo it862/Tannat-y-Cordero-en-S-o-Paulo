@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¡Reserva Confirmada! – São Paulo Festival</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5c102f",
+                        "accent-gold": "#c5a059",
+                        "background-dark": "#1a0d12",
+                        "surface-dark": "#2a181e",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes checkIn {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.2) rotate(5deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .anim-check {
+            animation: checkIn 0.6s cubic-bezier(.17, .67, .35, 1.3) 0.2s both;
+        }
+
+        .anim-fade-1 {
+            animation: fadeUp 0.5s ease 0.7s both;
+        }
+
+        .anim-fade-2 {
+            animation: fadeUp 0.5s ease 0.9s both;
+        }
+
+        .anim-fade-3 {
+            animation: fadeUp 0.5s ease 1.1s both;
+        }
+
+        .anim-fade-4 {
+            animation: fadeUp 0.5s ease 1.3s both;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-slate-100 min-h-screen flex flex-col items-center justify-center px-6 py-16">
+
+    <!-- Glow decoration -->
+    <div
+        class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/20 rounded-full blur-[120px] pointer-events-none">
+    </div>
+
+    <div class="relative z-10 max-w-lg w-full text-center">
+
+        <!-- Check icon -->
+        <div
+            class="anim-check w-28 h-28 bg-green-500/20 border-2 border-green-500/50 rounded-full flex items-center justify-center mx-auto mb-8">
+            <span class="material-symbols-outlined text-6xl text-green-400">check_circle</span>
+        </div>
+
+        <!-- Title -->
+        <div class="anim-fade-1">
+            <p class="text-accent-gold font-bold tracking-[0.25em] uppercase text-sm mb-3">Pago procesado</p>
+            <h1 class="text-4xl md:text-5xl font-black mb-4">¡Tu lugar está<br />confirmado! 🍷</h1>
+            <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                Gracias por tu reserva en <strong class="text-white">Tannat y Cordero en São Paulo</strong>.<br />
+                En breve recibirás tu entrada con QR por WhatsApp.
+            </p>
+        </div>
+
+        <!-- Info card -->
+        <div class="anim-fade-2 bg-surface-dark border border-primary/30 rounded-2xl p-8 mb-8 text-left space-y-4">
+            <h3 class="font-bold text-lg text-accent-gold mb-2 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">confirmation_number</span>
+                ¿Qué sigue ahora?
+            </h3>
+            <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-accent-gold text-2xl flex-shrink-0">phone_iphone</span>
+                <div>
+                    <p class="font-semibold text-white">Revisá tu WhatsApp</p>
+                    <p class="text-slate-400 text-sm">Te enviaremos tu entrada digital con código QR en los próximos
+                        minutos.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-accent-gold text-2xl flex-shrink-0">mail</span>
+                <div>
+                    <p class="font-semibold text-white">Confirmación por email</p>
+                    <p class="text-slate-400 text-sm">También recibirás un comprobante en tu correo electrónico.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-accent-gold text-2xl flex-shrink-0">qr_code_2</span>
+                <div>
+                    <p class="font-semibold text-white">Presentá tu QR en la entrada</p>
+                    <p class="text-slate-400 text-sm">El día del evento, mostrá el código QR recibido por WhatsApp para
+                        ingresar.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event details -->
+        <div class="anim-fade-3 bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-8">
+            <h3 class="font-bold text-white mb-4 uppercase tracking-widest text-sm">Detalles del evento</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="flex items-center gap-2 text-slate-300">
+                    <span class="material-symbols-outlined text-accent-gold text-base">location_on</span>
+                    Itaim Bibi, São Paulo
+                </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <span class="material-symbols-outlined text-accent-gold text-base">calendar_today</span>
+                    Próximamente 2024
+                </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <span class="material-symbols-outlined text-accent-gold text-base">directions_car</span>
+                    Valet incluido
+                </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <span class="material-symbols-outlined text-accent-gold text-base">restaurant</span>
+                    Menú completo
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="anim-fade-4 flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/"
+                class="inline-flex items-center justify-center gap-2 border border-primary/40 hover:border-primary text-white px-6 py-3 rounded-xl font-semibold transition-all hover:bg-primary/10">
+                <span class="material-symbols-outlined text-xl">arrow_back</span>
+                Volver al inicio
+            </a>
+            <a href="https://wa.me/55XXXXXXXXXX"
+                class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-semibold transition-all">
+                <span class="material-symbols-outlined text-xl">chat</span>
+                Contactar por WhatsApp
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Footer minimal -->
+    <div class="mt-16 text-slate-600 text-xs text-center">
+        © 2024 São Paulo Festival · <a href="/" class="hover:text-slate-400 transition-colors">saopaulofestival.com</a>
+    </div>
+
+</body>
+
+</html>

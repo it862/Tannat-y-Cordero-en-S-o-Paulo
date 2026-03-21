@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserva cancelada – São Paulo Festival</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5c102f",
+                        "accent-gold": "#c5a059",
+                        "background-dark": "#1a0d12",
+                        "surface-dark": "#2a181e",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .anim-1 {
+            animation: fadeUp 0.5s ease 0.1s both;
+        }
+
+        .anim-2 {
+            animation: fadeUp 0.5s ease 0.3s both;
+        }
+
+        .anim-3 {
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
+
+        /* countdown */
+        #countdown {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-slate-100 min-h-screen flex flex-col items-center justify-center px-6 py-16">
+
+    <div
+        class="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-primary/15 rounded-full blur-[100px] pointer-events-none">
+    </div>
+
+    <div class="relative z-10 max-w-lg w-full text-center">
+
+        <!-- Icon -->
+        <div
+            class="anim-1 w-24 h-24 bg-slate-700/40 border border-slate-600/40 rounded-full flex items-center justify-center mx-auto mb-8">
+            <span class="material-symbols-outlined text-5xl text-slate-400">shopping_cart_off</span>
+        </div>
+
+        <!-- Message -->
+        <div class="anim-2">
+            <p class="text-accent-gold font-bold tracking-[0.2em] uppercase text-sm mb-3">Pago no completado</p>
+            <h1 class="text-4xl font-black mb-4">Volviste sin completar<br />el pago</h1>
+            <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                No te preocupes, <strong class="text-white">tu lugar sigue disponible</strong>.<br />
+                Podés volver a intentarlo cuando quieras.
+            </p>
+        </div>
+
+        <!-- Urgency + CTA -->
+        <div class="anim-3 space-y-4">
+
+            <!-- Spots warning -->
+            <div class="bg-red-950/40 border border-red-800/30 rounded-xl px-6 py-4 flex items-center gap-3 text-left">
+                <span class="material-symbols-outlined text-red-400 text-2xl flex-shrink-0">warning</span>
+                <p class="text-sm text-slate-300">
+                    Los cupos son <strong class="text-red-400">estrictamente limitados</strong>.
+                    Tu reserva provisional expirará pronto.
+                </p>
+            </div>
+
+            <!-- Auto-redirect countdown -->
+            <p class="text-slate-500 text-sm">
+                Volviendo al formulario en <span id="countdown" class="text-accent-gold font-bold">10</span> segundos...
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <a href="/#reserve"
+                    class="flex-1 inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/80 text-white font-bold py-4 rounded-xl transition-all uppercase tracking-widest">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Reintentar reserva
+                </a>
+                <a href="https://wa.me/55XXXXXXXXXX"
+                    class="flex-1 inline-flex items-center justify-center gap-2 border border-primary/40 hover:border-primary text-white font-semibold py-4 rounded-xl transition-all hover:bg-primary/10">
+                    <span class="material-symbols-outlined">support_agent</span>
+                    Necesito ayuda
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-16 text-slate-600 text-xs text-center">
+        © 2024 São Paulo Festival · <a href="/" class="hover:text-slate-400 transition-colors">saopaulofestival.com</a>
+    </div>
+
+    <script>
+        // Auto-redirect countdown
+        let secs = 10;
+        const el = document.getElementById('countdown');
+        const timer = setInterval(() => {
+            secs--;
+            el.textContent = secs;
+            if (secs <= 0) {
+                clearInterval(timer);
+                window.location.href = '/#reserve';
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

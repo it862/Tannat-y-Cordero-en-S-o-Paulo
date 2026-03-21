@@ -1,0 +1,94 @@
+# Arquitectura Low-Code Oficial: Landing Page + n8n + dLocal Go
+
+## Contexto
+El sistema interactúa con la API de dLocal Go usando credenciales puras sin firma para llamadas de salida, y reservando la firma criptográfica HMAC-SHA256 exclusivamente para verificar los webhooks entrantes (notificaciones).
+
+---
+
+## 🚀 Flujo 1: Sincrónico (Crear Pago)
+Genera la URL de pago de dLocal Go en tiempo real cuando el usuario hace submit en la landing page.
+
+### 1. Webhook (Entrada Frontend)
+- **Method:** POST `/webhook/evento-reserva`
+- **Response:** "When Last Node Finishes" (Respond to Webhook).
+- **CORS:** `Access-Control-Allow-Origin: *`
+
+### 2. Nodo Code (Set Configuration)
+Genera el `order_id` y prepara el header estándar de Bearer token.
+```javascript
+const apiKey = $env.DLOCALGO_API_KEY; 
+const secret = $env.DLOCALGO_SECRET_KEY;
+
+const payload = {
+  amount: $json.body.amount,
+  currency: $json.body.currency,
+  country: $json.body.country,
+  order_id: 'TANNAT-' + $json.body.country + '-' + Date.now(),
+  description: 'Entrada Tannat y Cordero en São Paulo x' + $json.body.quantity,
+  success_url: 'https://tu-dominio.com/success',
+  back_url: 'https://tu-dominio.com/checkout',
+  notification_url: 'https://tu-n8n/webhook/dlocal-status',
+  payer: {
+    name: $json.body.first_name + ' ' + $json.body.last_name,
+    email: $json.body.email,
+    phone: $json.body.phone
+  }
+};
+
+return [{
+  json: {
+    payload: payload,
+    auth_header: `Bearer ${apiKey}:${secret}`
+  }
+}];
+```
+
+### 3. Nodo HTTP Request (dLocal API)
+- **URL:** `{{$env.DLOCALGO_BASE_URL}}/v1/payments`
+- **Headers:** 
+  - `Content-Type`: `application/json`
+  - `Authorization`: `{{$json.auth_header}}`
+- **Body:** `{{$json.payload}}`
+
+### 4. Nodo IF y Respuesta
+Evalúa el éxito de dLocal Go:
+- **IF:** Si `$json.redirect_url` existe.
+- **True:** Devuelve `{ "status": "success", "redirect_url": "..." }`.
+- **False:** Devuelve `{ "status": "error", "message": "Error al procesar pago" }`.
+
+---
+
+## 🛡️ Flujo 2: Asíncrono (Confirmación Segura del Pago)
+Recibe el aviso de dLocal Go, lo verifica con firma HMAC y luego reconsulta el estatus para asegurar autenticidad.
+
+### 1. Webhook (Recibe notificación de dLocal Go)
+- **Method:** POST `/webhook/dlocal-status`
+
+### 2. Nodo Code (Verificación HMAC)
+Extrae y valida que sea una notificación genuina enviada por dLocal.
+```javascript
+const crypto = require('crypto');
+const apiKey = $env.DLOCALGO_API_KEY; 
+const secret = $env.DLOCALGO_SECRET_KEY;
+const bodyStr = JSON.stringify($input.first().json.body);
+
+const headerSig = $input.first().json.headers['authorization'].split("Signature: ")[1];
+const generatedSig = crypto
+  .createHmac('sha256', secret)
+  .update(apiKey + bodyStr)
+  .digest('hex');
+
+if (headerSig !== generatedSig) {
+    throw new Error("Firma HMAC inválida!");
+}
+return [{ json: { payment_id: $input.first().json.body.payment_id, auth_header: `Bearer ${apiKey}:${secret}` } }];
+```
+
+### 3. HTTP Request (Validación en vivo)
+- **Method:** GET `{{$env.DLOCALGO_BASE_URL}}/v1/payments/{{$json.payment_id}}`
+- **Header:** `Authorization: {{$json.auth_header}}`
+
+### 4. Flujo de Activación y Supabase
+- **IF:** Si status === 'PAID'
+- **Supabase:** Inserta `{"payment_id": "...", "status": "CONFIRMED", ...}` usando header `Prefer: resolution=merge-duplicates`.
+- **QR / WhatsApp:** Genera el QR y envía mediante Evolution API.

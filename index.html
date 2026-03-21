@@ -33,6 +33,15 @@
                         "xl": "0.75rem",
                         "full": "9999px"
                     },
+                    animation: {
+                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+                    },
+                    keyframes: {
+                        'infinite-scroll': {
+                            from: { transform: 'translateX(0)' },
+                            to: { transform: 'translateX(-100%)' },
+                        }
+                    }
                 },
             },
         }
@@ -198,67 +207,32 @@
                             class="text-sm font-normal text-slate-400">/persona</span></div>
                     <p class="text-red-400 font-bold text-lg mt-2 animate-pulse">🔥 Quedan solo <span id="spots-left">47</span> lugares disponibles
                     </p>
-                    <script>
-                        // Logic for dynamic available spots counter
-                        const anchorDate = new Date("2026-03-17T00:00:00").getTime(); // Start date
-                        const now = new Date().getTime();
-                        
-                        // Calculate days passed since anchor date
-                        const daysPassed = Math.floor((now - anchorDate) / (1000 * 60 * 60 * 24));
-                        
-                        // Decrease 5 spots every 3 full days
-                        const decreases = Math.floor(daysPassed / 3);
-                        let currentSpots = 47 - (decreases * 5);
-                        
-                        // Stop decreasing when it reaches 19
-                        if (currentSpots < 19) {
-                            currentSpots = 19;
-                        }
-                        
-                        document.getElementById("spots-left").textContent = currentSpots;
-                    </script>
+
                     <p class="text-slate-400 text-sm mb-8 italic">Precios finales con impuestos incluidos.</p>
                 </div>
                 <div class="bg-primary/10 p-12 flex flex-col justify-center border-l border-primary/20" id="reserve">
                     <h3 class="text-2xl font-bold mb-6 text-center">Reserva tu lugar</h3>
-                    <form id="booking-form" class="space-y-4" onsubmit="initPayment(event)">
-                        <div>
-                            <input id="f-name" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Nombre completo" required="" type="text" />
-                        </div>
-                        <div>
-                            <input id="f-email" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Correo electrónico" required="" type="email" />
-                        </div>
-                        <div>
-                            <input id="f-phone" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Teléfono / WhatsApp" required="" type="tel" />
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none" required="">
-                                <option value="BR">🇧🇷 Brasil (BRL)</option>
-                                <option value="UY">🇺🇾 Uruguay (UYU)</option>
-                                <option value="AR">🇦🇷 Argentina (ARS)</option>
-                            </select>
-                            
-                            <div class="w-full bg-background-dark border border-primary/30 rounded-lg px-4 flex items-center justify-between text-white">
-                                <button type="button" id="q-minus" class="text-accent-gold text-2xl font-bold w-10 h-full hover:text-white transition-colors">−</button>
-                                <span id="qty-n" class="font-bold text-lg pointer-events-none">1</span>
+                    <div id="quantity-section" class="space-y-4">
+                        <div class="mb-6">
+                            <label class="block text-slate-400 mb-2 uppercase tracking-wider text-sm">Cantidad de entradas:</label>
+                            <div class="w-full bg-background-dark border border-primary/30 rounded-lg px-4 py-2 flex items-center justify-between text-white">
+                                <button type="button" id="q-minus" class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">−</button>
+                                <span id="qty-n" class="font-bold text-xl pointer-events-none">1</span>
                                 <input type="hidden" id="f-quantity" value="1" />
-                                <button type="button" id="q-plus" class="text-accent-gold text-2xl font-bold w-10 h-full hover:text-white transition-colors">+</button>
+                                <button type="button" id="q-plus" class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">+</button>
                             </div>
                         </div>
 
                         <!-- Total display -->
-                        <div class="flex justify-between items-center py-2 border-t border-primary/20 mt-4">
-                            <span class="text-slate-400 text-sm">Total a pagar:</span>
-                            <span class="text-2xl font-black text-accent-gold">R$<span id="total-amount">150</span></span>
+                        <div class="flex justify-between items-center py-4 border-y border-primary/20 my-6">
+                            <span class="text-slate-400">Total a pagar:</span>
+                            <span class="text-4xl font-black text-accent-gold">R$<span id="total-amount">5</span></span>
                         </div>
-                        <p id="msg-load" class="text-accent-gold text-center text-sm font-bold animate-pulse hidden"></p>
-                        <p id="msg-error" class="text-red-500 text-center text-sm font-bold hidden"></p>
                         
-                        <button id="pay-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg mt-4 flex items-center justify-center gap-2" type="submit">
-                            <span id="btn-txt">Continuar al pago</span>
-                            <span id="spinner" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        <button type="button" id="open-modal-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg flex items-center justify-center gap-2">
+                            <span>Ingresar Datos y Pagar</span>
                         </button>
-                    </form>
+                    </div>
                     <div
                         class="mt-6 flex items-center justify-center gap-2 text-slate-400 text-xs text-center leading-relaxed">
                         <span class="material-symbols-outlined text-sm">bolt</span>
@@ -360,11 +334,13 @@
                     </h4>
                     <div class="flex flex-wrap justify-center gap-12 opacity-80">
                         <div
-                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 font-bold italic">
-                            Logo Bodega Premium</div>
+                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 p-2">
+                            <img src="https://i.imgur.com/yVPTLof.png" alt="Bodega Premium" class="max-h-full max-w-full object-contain" />
+                        </div>
                         <div
-                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 font-bold italic">
-                            SenderosGroup</div>
+                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 p-2">
+                            <img src="https://i.imgur.com/pNOCaI2.png" alt="SenderosGroup" class="max-h-full max-w-full object-contain" />
+                        </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
@@ -391,6 +367,42 @@
                         <div
                             class="h-12 w-full bg-primary/10 rounded border border-primary/10 flex items-center justify-center text-xs">
                             Media Partner</div>
+                    </div>
+                </div>
+
+                <!-- Parceiros Carrusel Infinito -->
+                <div class="mt-24 pt-12 border-t border-primary/10">
+                    <h4 class="text-center text-slate-500 font-bold mb-12 uppercase tracking-[0.2em] text-sm">Parceiros</h4>
+                    
+                    <div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+                        <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
+                            <li>
+                                <img src="https://i.imgur.com/jom8LFC.png" alt="Parceiro 1" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/yVPTLof.png" alt="Parceiro 2" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/pNOCaI2.png" alt="Parceiro 3" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/Lyby64x.png" alt="Parceiro 4" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                        </ul>
+                        <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll" aria-hidden="true">
+                            <li>
+                                <img src="https://i.imgur.com/jom8LFC.png" alt="Parceiro 1" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/yVPTLof.png" alt="Parceiro 2" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/pNOCaI2.png" alt="Parceiro 3" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                            <li>
+                                <img src="https://i.imgur.com/Lyby64x.png" alt="Parceiro 4" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -492,101 +504,74 @@
             </div>
         </div>
     </footer>
-<script>
-  // CONFIGURACIÓN DE TU n8n
-  const CONFIG = {
-    N8N_WEBHOOK_URL: 'https://TU-N8N.app.n8n.cloud/webhook/evento-reserva', // REEMPLAZA ESTO
-    UNIT_PRICE: 150,
-    CURRENCY: 'BRL',
-    EVENT_ID: 'tannat_cordero_sp',
-    MAX_QTY: 10
-  };
 
-  let qty = 1;
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-surface-dark border border-primary/30 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative transform scale-95 transition-transform duration-300" id="payment-modal-content">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-primary/20 bg-background-dark">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-accent-gold">lock</span>
+                    Pago Seguro
+                </h3>
+                <button type="button" id="close-modal-btn" class="text-slate-400 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6">
+                <form id="booking-form" class="space-y-4" onsubmit="initPayment(event)">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Nombre completo</label>
+                        <input id="f-name" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: Tony Stark" required="" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Correo electrónico</label>
+                        <input id="f-email" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: email@dominio.com" required="" type="email" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">País</label>
+                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none" required="">
+                                <option value="BR">🇧🇷 Brasil</option>
+                                <option value="UY">🇺🇾 Uruguay</option>
+                                <option value="AR">🇦🇷 Argentina</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Teléfono / WhatsApp</label>
+                            <input id="f-phone" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: 11988887777" required="" type="tel" />
+                        </div>
+                    </div>
+                    
+                    <div id="cpf-container" class="transition-all duration-300">
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">CPF <span class="text-red-400">*</span></label>
+                        <input id="f-cpf" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="000.000.000-00" type="text" />
+                        <p class="text-[10px] text-slate-500 mt-1">Requerido por procesador de pagos (Pagar.me Brasil).</p>
+                    </div>
 
-  document.getElementById('q-minus').addEventListener('click', () => {
-    if (qty > 1) { qty--; updateTotal(); }
-  });
-  
-  document.getElementById('q-plus').addEventListener('click', () => {
-    if (qty < CONFIG.MAX_QTY) { qty++; updateTotal(); }
-  });
-
-  function updateTotal() {
-    document.getElementById('qty-n').textContent = qty;
-    document.getElementById('f-quantity').value = qty;
-    document.getElementById('total-amount').textContent = (CONFIG.UNIT_PRICE * qty).toLocaleString('pt-BR');
-  }
-
-  async function initPayment(e) {
-    if (e) e.preventDefault();
-    
-    // UI Setup
-    const payBtn = document.getElementById('pay-btn');
-    const btnTxt = document.getElementById('btn-txt');
-    const spinner = document.getElementById('spinner');
-    const msgLoad = document.getElementById('msg-load');
-    const msgError = document.getElementById('msg-error');
-    
-    payBtn.disabled = true;
-    payBtn.classList.add('opacity-70');
-    btnTxt.style.display = 'none';
-    spinner.classList.remove('hidden');
-    msgError.classList.add('hidden');
-    
-    msgLoad.textContent = 'Preparando tu reserva... un momento 🍷';
-    msgLoad.classList.remove('hidden');
-
-    const fullName = document.getElementById('f-name').value.trim();
-    const [firstName, ...lastNames] = fullName.split(' ');
-    const lastName = lastNames.join(' ') || '.';
-    const qty = parseInt(document.getElementById('f-quantity').value, 10);
-
-    const payload = {
-      event:      CONFIG.EVENT_ID,
-      first_name: firstName,
-      last_name:  lastName,
-      email:      document.getElementById('f-email').value.trim(),
-      phone:      document.getElementById('f-phone').value.trim(),
-      country:    document.getElementById('f-country').value,
-      quantity:   qty,
-      amount:     CONFIG.UNIT_PRICE * qty,
-      currency:   CONFIG.CURRENCY,
-    };
-
-    try {
-      const res = await fetch(CONFIG.N8N_WEBHOOK_URL, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
-      });
-
-      let data;
-      try { data = await res.json(); } 
-      catch { throw new Error('Respuesta inesperada del servidor. Intenta nuevamente.'); }
-
-      if (!res.ok || data.status === 'error') {
-        throw new Error(data.message || `Error del servidor (${res.status}).`);
-      }
-      if (!data.redirect_url) {
-        throw new Error('No se recibió la URL de pago.');
-      }
-
-      msgLoad.textContent = '¡Listo! Redirigiendo al pago seguro...';
-      window.location.href = data.redirect_url;
-      
-    } catch (err) {
-      payBtn.disabled = false;
-      payBtn.classList.remove('opacity-70');
-      btnTxt.style.display = 'inline';
-      spinner.classList.add('hidden');
-      msgLoad.classList.add('hidden');
-      
-      msgError.textContent = err.message || 'Error al procesar. Por favor intenta nuevamente.';
-      msgError.classList.remove('hidden');
-    }
-  }
-</script>
+                    <div class="pt-4 border-t border-primary/20 mt-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-slate-400">Total a pagar:</span>
+                            <span class="text-2xl font-black text-accent-gold">R$<span id="modal-total-amount">5</span></span>
+                        </div>
+                        
+                        <div id="msg-container" class="hidden mb-4 p-3 rounded-lg text-sm font-medium">
+                            <p id="msg-text" class="text-center"></p>
+                        </div>
+                        
+                        <button id="pay-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg flex items-center justify-center gap-2" type="submit">
+                            <span id="btn-txt">Pagar y Confirmar</span>
+                            <span id="spinner" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="config.js"></script>
+<script src="app.js"></script>
 </body>
 
 </html>

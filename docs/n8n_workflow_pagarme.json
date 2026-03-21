@@ -1,0 +1,203 @@
+{
+  "name": "Senderos Tannat – Pagar.me Checkout",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evento-reserva",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "webhook-entrada",
+      "name": "Webhook Reserva",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 300],
+      "webhookId": "evento-reserva"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════\n//  CONFIGURACIÓN HARDCODEADA — PAGAR.ME\n//  Modificar solo esta sección para cambiar\n//  credenciales, precios o URLs\n// ═══════════════════════════════════════════════\n\nconst PAGARME_SECRET_KEY = 'sk_test_XXXXXXXXXX';   // ← PONER TU SECRET KEY\nconst PAGARME_API_URL    = 'https://api.pagar.me/core/v5/orders';\n\nconst UNIT_PRICE_CENTAVOS = 500;  // R$5.00 en centavos (mínimo prueba)\nconst EVENT_NAME   = 'Tannat y Cordero en São Paulo';\nconst SUCCESS_URL  = 'https://TU-DOMINIO.vercel.app/success';\nconst MAX_QTY      = 10;\n\n// ═══════════════════════════════════════════════\n//  LÓGICA (no tocar salvo cambio de estructura)\n// ═══════════════════════════════════════════════\n\nconst input = $input.first().json.body;\n\n// Validación básica\nif (!input.email || !input.first_name || !input.quantity) {\n  throw new Error('Faltan campos obligatorios');\n}\n\nconst qty = Math.min(Math.max(parseInt(input.quantity, 10) || 1, 1), MAX_QTY);\nconst totalCentavos = UNIT_PRICE_CENTAVOS * qty;\n\n// ID interno para reconciliación\nconst orderId = 'TANNAT-' + (input.country || 'BR') + '-' + Date.now();\n\n// Body para Pagar.me API v5 — Checkout alojado\nconst orderPayload = {\n  code: orderId,\n  items: [\n    {\n      amount:      UNIT_PRICE_CENTAVOS,\n      description: EVENT_NAME,\n      quantity:    qty,\n    }\n  ],\n  customer: {\n    name:  (input.first_name + ' ' + (input.last_name || '')).trim(),\n    email: input.email,\n    document: input.document ? input.document.replace(/\\\\D/g, '') : undefined,\n    type:     input.document ? 'individual' : undefined,\n    phones: {\n      mobile_phone: {\n        country_code: '55',\n        area_code:    (input.phone || '').substring(0, 2),\n        number:       (input.phone || '').substring(2).replace(/\\\\D/g, ''),\n      }\n    }\n  },\n  payments: [\n    {\n      payment_method: 'checkout',\n      amount: totalCentavos,\n      checkout: {\n        customer_editable:            false,\n        skip_checkout_success_page:   true,\n        accepted_payment_methods:     ['credit_card', 'pix'],\n        success_url:                  SUCCESS_URL,\n        pix: {\n          expires_in: 900,\n        },\n        credit_card: {\n          capture:              true,\n          statement_descriptor: 'SENDEROS SP',\n          installments: [\n            { number: 1, total: totalCentavos },\n          ]\n        }\n      }\n    }\n  ],\n  metadata: {\n    source:   'landing_tannat',\n    order_id: orderId,\n    country:  input.country || 'BR',\n    phone:    input.phone || '',\n  },\n};\n\n// Preparar auth (Basic Auth: sk_xxx:<vacío>)\nconst authB64 = Buffer.from(PAGARME_SECRET_KEY + ':').toString('base64');\n\nreturn [{\n  json: {\n    api_url:      PAGARME_API_URL,\n    auth_header:  'Basic ' + authB64,\n    order_body:   orderPayload,\n    order_id:     orderId,\n  }\n}];\n"
+      },
+      "id": "code-config",
+      "name": "Set Config + Build Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.api_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.auth_header }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.order_body) }}",
+        "options": {
+          "ignoreResponseCode": true,
+          "response": {
+            "response": {
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "id": "http-pagarme",
+      "name": "Pagar.me Create Order",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-checkout-exists",
+              "leftValue": "={{ $json.checkouts[0].payment_url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            },
+            {
+              "id": "f0aa2ec3-4ac5-4a98-9be9-fd52c323eb5d",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f6728fc6-f5eb-4836-a3f4-8aeaf2a45dbe",
+      "name": "Checkout OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [940, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"redirect_url\": \"{{ $json.checkouts[0].payment_url }}\",\n  \"order_id\": \"{{ $('Set Config + Build Payload').item.json.order_id }}\"\n}",
+        "options": {}
+      },
+      "id": "a39e1b33-1f44-4c6a-97bc-a543b7f83ab2",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1180, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"error\",\n  \"message\": \"{{ $json.message ? ($json.message === 'Authorization has been denied for this request.' ? 'Error de autenticación: Verificá la Secret Key de Pagar.me.' : $json.message) : 'Error del lado del servidor de pagos.' }}\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "8bc47c9d-f739-4bda-91d5-842cab77fb2d",
+      "name": "Respond Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1180, 420]
+    }
+  ],
+  "connections": {
+    "Webhook Reserva": {
+      "main": [
+        [
+          {
+            "node": "Set Config + Build Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Config + Build Payload": {
+      "main": [
+        [
+          {
+            "node": "Pagar.me Create Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pagar.me Create Order": {
+      "main": [
+        [
+          {
+            "node": "Checkout OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout OK?": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "senderos"
+    },
+    {
+      "name": "pagarme"
+    }
+  ]
+}

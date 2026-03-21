@@ -1,0 +1,81 @@
+# Fix Auth + Popup de Pago + Manejo de Errores
+
+## Problema 1: Error 401
+
+El header `Basic cGtfMWFlZ1ZZVHhiSTgxM25CVzo=` decodifica a `pk_1aegVYTxbI813nBW:` — es la **Public Key**.
+
+Pagar.me requiere la **Secret Key** (`sk_xxx`) para crear pedidos. La `pk_` solo sirve para tokenización en frontend.
+
+> [!CAUTION]
+> Necesitás obtener la `sk_xxx` del Dashboard de Pagar.me (Configurações → Chaves de API) y pegarla en el Code node de n8n. Sin esto, nada funciona.
+
+---
+
+## Problema 2: Pagar.me requiere más datos del customer
+
+Para clientes PSP, Pagar.me necesita:
+- `document` (CPF para Brasil, obligatorio)
+- `phones` (teléfono con country_code, area_code, number)
+- `name`, `email`
+
+---
+
+## Propuesta: Nuevo flujo de UX
+
+### Flujo actual
+```
+Formulario completo visible → Click "Continuar al pago" → POST a n8n → redirect
+```
+
+### Flujo nuevo
+```
+Botón "Reservar" → Popup modal con campos requeridos → Click "Pagar" → POST a n8n → éxito: redirect / error: mostrar en popup
+```
+
+---
+
+## Cambios propuestos
+
+### Frontend
+
+#### [MODIFY] [index.html](file:///c:/Users/it/OneDrive/Documentos/Playground/SENDEROS%20DEV%20MASTER/03_WEB_BRASIL/LANDING%20PAGE%20SENDEROS%20TANNAT/index.html)
+
+- Reemplazar formulario inline por botón de cantidad + botón "Reservar ahora"
+- Agregar modal/popup con los campos que Pagar.me requiere:
+  - Nombre completo
+  - Email
+  - Teléfono / WhatsApp
+  - CPF (solo si país = BR)
+  - País (selector)
+- El popup muestra errores de validación devueltos por n8n/Pagar.me
+
+#### [MODIFY] [app.js](file:///c:/Users/it/OneDrive/Documentos/Playground/SENDEROS%20DEV%20MASTER/03_WEB_BRASIL/LANDING%20PAGE%20SENDEROS%20TANNAT/app.js)
+
+- Agregar lógica del modal (abrir/cerrar)
+- [initPayment()](file:///c:/Users/it/OneDrive/Documentos/Playground/SENDEROS%20DEV%20MASTER/03_WEB_BRASIL/LANDING%20PAGE%20SENDEROS%20TANNAT/app.js#60-132) ahora lee campos del popup
+- Manejar respuestas de error de n8n y mostrarlas en el popup
+- Validación frontend de CPF antes de enviar
+
+### Backend (n8n)
+
+#### Code node: "Set Config + Build Payload"
+
+- Agregar `document` y `document_type` al objeto `customer`
+- Agregar `address` básico al customer (Pagar.me puede requerirlo)
+- Mejorar error handling: si Pagar.me devuelve error, capturarlo y reenviarlo al frontend
+
+#### HTTP Request node
+
+- Activar **"Continue On Fail"** para que el flujo no se corte en errores 4xx
+- El IF evalúa si hubo error o éxito
+- El Respond Error devuelve el mensaje real de Pagar.me
+
+---
+
+## Verificación
+
+1. Probar con `sk_test_xxx` (sandbox de Pagar.me)
+2. Verificar que el popup se abre correctamente
+3. Enviar formulario con datos válidos → debe redirigir al checkout de Pagar.me
+4. Enviar formulario con CPF inválido → Pagar.me rechaza → el error aparece en el popup
+5. Verificar que el campo CPF solo aparece cuando país = BR
