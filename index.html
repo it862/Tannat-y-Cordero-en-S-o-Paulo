@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>São Paulo Festival – Tannat y Cordero</title>
+    <meta name="description" content="Experiencia gastronómica uruguaya exclusiva en São Paulo. Tannat y Cordero a la parrilla. Reserva tu lugar." />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
@@ -33,15 +34,6 @@
                         "xl": "0.75rem",
                         "full": "9999px"
                     },
-                    animation: {
-                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
-                    },
-                    keyframes: {
-                        'infinite-scroll': {
-                            from: { transform: 'translateX(0)' },
-                            to: { transform: 'translateX(-100%)' },
-                        }
-                    }
                 },
             },
         }
@@ -54,6 +46,39 @@
         .glass-effect {
             background: rgba(42, 24, 30, 0.8);
             backdrop-filter: blur(12px);
+        }
+
+        /* ── Carrusel Parceiros ────────────────── */
+        .carousel-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+        }
+
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .carousel-track img {
+            height: 48px;
+            margin: 0 2.5rem;
+            opacity: 0.7;
+            filter: grayscale(30%);
+            transition: opacity 0.3s, filter 0.3s;
+        }
+
+        .carousel-track img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
         }
     </style>
 </head>
@@ -73,28 +98,28 @@
                 <a class="hover:text-accent-gold transition-colors" href="#about" data-i18n="nav_details">Detalles</a>
                 <a class="hover:text-accent-gold transition-colors" href="#venue" data-i18n="nav_venue">Ubicación</a>
                 <a class="hover:text-accent-gold transition-colors" href="#gallery" data-i18n="nav_gallery">Galería</a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <!-- Selector de Idioma -->
-                <div class="flex items-center gap-2 text-sm font-bold">
-                    <button class="lang-btn hover:text-accent-gold transition-colors text-slate-400" data-lang="pt" onclick="I18N.setLang('pt')">PT</button>
-                    <span class="text-slate-600">|</span>
-                    <button class="lang-btn hover:text-accent-gold transition-colors" data-lang="es" onclick="I18N.setLang('es')">ES</button>
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-1 border-l border-white/20 pl-6">
+                    <button class="lang-btn text-sm px-2 py-1 rounded hover:bg-white/10 transition-colors text-accent-gold font-bold" data-lang="es" onclick="I18N.setLang('es')">ES</button>
+                    <span class="text-slate-500">|</span>
+                    <button class="lang-btn text-sm px-2 py-1 rounded hover:bg-white/10 transition-colors text-slate-400" data-lang="pt" onclick="I18N.setLang('pt')">PT</button>
                 </div>
-                
-                <a class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all uppercase tracking-wider"
-                    href="#reserve" data-i18n="nav_reserve">
-                    Reservar
-                </a>
-            </div>
+            </nav>
+            <a class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all uppercase tracking-wider"
+                href="#reserve" data-i18n="nav_reserve">
+                Reservar
+            </a>
         </div>
     </header>
+
+    <!-- ═══ HERO ═══ -->
     <section class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-black/60 z-10"></div>
         <div class="absolute inset-0 bg-cover bg-center scale-105"
             data-alt="Grilled lamb ribs and premium red wine setup"
             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2HxiJyLNuOd4XM8gyssVdFnwog5I9LrZIJ_NPYsIuSji20p_Y2FsA2mzxjsAsGo92_VX-8qP9R4LwhzKeVFaQAGpZSxS6rXZ-6B4Ryrev5OwvU3zAd6rgNrmXMxAd9IOL3DnJgZ0qPrhaMrZYiSMI_mao3-ObxvTjZH0RmKlnQhxj_OTh9tkfU-GjbuWko5TJuinnawG3XmPuC7--HVuZWcZ52iyIXvrRaw5bofgAIHYc5HzSnATwu_vPIjJkklZH7NBky7DUFXg')">
-        <        <div class="relative z-20 text-center px-6 max-w-4xl">
+        </div>
+        <div class="relative z-20 text-center px-6 max-w-4xl">
             <span class="inline-block text-accent-gold font-bold tracking-[0.3em] uppercase mb-4" data-i18n="hero_sup">Experiencia
                 Gastronómica</span>
             <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight"><span data-i18n="hero_title1">Tannat y Cordero</span> <br /> <span data-i18n="hero_title2">en</span> <span
@@ -112,7 +137,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-accent-gold">payments</span>
-                    <span class="font-bold text-2xl">R$5</span>
+                    <span class="font-bold text-2xl">R$150</span>
                 </div>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-4">
@@ -126,12 +151,13 @@
                 </a>
             </div>
             <p class="text-sm text-slate-400 mt-6 w-full" data-i18n="hero_trust">Pago seguro · Confirmación inmediata · Cupos limitados</p>
-        </div>p>
         </div>
         <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
             <span class="material-symbols-outlined text-white/50 text-4xl">expand_more</span>
         </div>
     </section>
+
+    <!-- ═══ EXPERIENCIA ═══ -->
     <section class="py-24 px-6 bg-background-light dark:bg-background-dark" id="experience">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
@@ -176,6 +202,8 @@
             </div>
         </div>
     </section>
+
+    <!-- ═══ ABOUT ═══ -->
     <section class="py-24 relative overflow-hidden bg-surface-dark" id="about">
         <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
             <h2 class="text-4xl md:text-6xl font-black mb-8 italic" data-i18n="about_title">Exclusividad en cada detalle</h2>
@@ -190,9 +218,13 @@
         <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -ml-32 -mb-32"></div>
     </section>
+
+    <!-- ═══ PRECIOS + FORMULARIO INLINE ═══ -->
     <section class="py-24 px-6 bg-background-light dark:bg-background-dark">
         <div class="max-w-4xl mx-auto bg-surface-dark rounded-3xl overflow-hidden shadow-2xl border border-primary/20">
-            <                <div class="p-12 flex flex-col justify-center">
+            <div class="grid md:grid-cols-2">
+                <!-- Columna Izquierda: Detalles del plan -->
+                <div class="p-12 flex flex-col justify-center">
                     <h3 class="text-3xl font-black mb-6" data-i18n="price_includes">Tu reserva incluye:</h3>
                     <ul class="space-y-4 mb-10">
                         <li class="flex items-start gap-3"><span
@@ -211,46 +243,123 @@
                                 class="text-slate-300" data-i18n="price_incl4">Degustación de menú uruguayo</span>
                         </li>
                     </ul>
-                    <div class="text-5xl font-black text-white mb-2">R$5<span
+                    <div class="text-5xl font-black text-white mb-2">R$150<span
                             class="text-sm font-normal text-slate-400" data-i18n="price_per">/persona</span></div>
-                    <p class="text-red-400 font-bold text-lg mt-2 animate-pulse"><span data-i18n="price_spots1">🔥 Quedan solo</span> <span id="spots-left">47</span> <span data-i18n="price_spots2">lugares disponibles</span>
+                    <p class="text-red-400 font-bold text-lg mt-2 animate-pulse"><span data-i18n="price_spots1">🔥 Quedan solo</span> <span
+                            id="spots-left">47</span> <span data-i18n="price_spots2">lugares disponibles</span>
                     </p>
 
                     <p class="text-slate-400 text-sm mb-8 italic" data-i18n="price_taxes">Precios finales con impuestos incluidos.</p>
                 </div>
-                <div class="bg-primary/10 p-12 flex flex-col justify-center border-l border-primary/20" id="reserve">
+
+                <!-- Columna Derecha: Formulario Inline (sin modal) -->
+                <div class="bg-primary/10 p-8 md:p-12 flex flex-col justify-center border-l border-primary/20" id="reserve">
                     <h3 class="text-2xl font-bold mb-6 text-center" data-i18n="book_title">Reserva tu lugar</h3>
-                    <div id="quantity-section" class="space-y-4">
-                        <div class="mb-6">
-                            <label class="block text-slate-400 mb-2 uppercase tracking-wider text-sm" data-i18n="book_qty">Cantidad de entradas:</label>
-                            <div class="w-full bg-background-dark border border-primary/30 rounded-lg px-4 py-2 flex items-center justify-between text-white">
-                                <button type="button" id="q-minus" class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">−</button>
+
+                    <form id="booking-form" class="space-y-4" onsubmit="initPayment(event)">
+                        <!-- Cantidad -->
+                        <div>
+                            <label class="block text-slate-400 mb-2 uppercase tracking-wider text-xs" data-i18n="book_qty">Cantidad de
+                                entradas:</label>
+                            <div
+                                class="w-full bg-background-dark border border-primary/30 rounded-lg px-4 py-2 flex items-center justify-between text-white">
+                                <button type="button" id="q-minus"
+                                    class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">−</button>
                                 <span id="qty-n" class="font-bold text-xl pointer-events-none">1</span>
                                 <input type="hidden" id="f-quantity" value="1" />
-                                <button type="button" id="q-plus" class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">+</button>
+                                <button type="button" id="q-plus"
+                                    class="text-accent-gold text-3xl font-bold w-12 h-full hover:text-white transition-colors">+</button>
                             </div>
                         </div>
 
                         <!-- Total display -->
-                        <div class="flex justify-between items-center py-4 border-y border-primary/20 my-6">
+                        <div class="flex justify-between items-center py-3 border-y border-primary/20 my-2">
                             <span class="text-slate-400" data-i18n="book_total">Total a pagar:</span>
-                            <span class="text-4xl font-black text-accent-gold">R$<span id="total-amount">5</span></span>
+                            <span class="text-3xl font-black text-accent-gold">R$<span
+                                    id="total-amount">150</span></span>
                         </div>
-                        
-                        <button type="button" id="open-modal-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg flex items-center justify-center gap-2">
-                            <span data-i18n="book_btn">Ingresar Datos y Pagar</span>
+
+                        <!-- Nombre -->
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_name">Nombre
+                                completo</label>
+                            <input id="f-name"
+                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
+                                placeholder="Ej: Tony Stark" required="" type="text" />
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_email">Correo
+                                electrónico</label>
+                            <input id="f-email"
+                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
+                                placeholder="Ej: email@dominio.com" required="" type="email" />
+                        </div>
+
+                        <!-- País + Teléfono -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_country">País</label>
+                                <select id="f-country"
+                                    class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none"
+                                    required="">
+                                    <option value="BR">🇧🇷 Brasil</option>
+                                    <option value="UY">🇺🇾 Uruguay</option>
+                                    <option value="AR">🇦🇷 Argentina</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_phone">Teléfono /
+                                    WhatsApp</label>
+                                <input id="f-phone"
+                                    class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
+                                    placeholder="Ej: 11988887777" required="" type="tel" />
+                            </div>
+                        </div>
+
+                        <!-- CPF -->
+                        <div id="cpf-container" class="transition-all duration-300">
+                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">CPF <span
+                                    class="text-red-400">*</span></label>
+                            <input id="f-cpf"
+                                class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
+                                placeholder="000.000.000-00" type="text" />
+                            <p class="text-[10px] text-slate-500 mt-1" data-i18n="mod_cpf_req">Requerido por procesador de pagos (Pagar.me Brasil).
+                            </p>
+                        </div>
+
+                        <!-- Mensaje de feedback -->
+                        <div id="msg-container" class="hidden mb-2 p-3 rounded-lg text-sm font-medium">
+                            <p id="msg-text" class="text-center"></p>
+                        </div>
+
+                        <!-- Botón Pagar -->
+                        <button id="pay-btn"
+                            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
+                            type="submit">
+                            <span id="btn-txt" data-i18n="mod_btn">Pagar y Confirmar</span>
+                            <span id="spinner"
+                                class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                         </button>
+                    </form>
+
+                    <!-- Trust Badge -->
+                    <div class="mt-4 flex items-center justify-center gap-2 text-green-400 text-xs text-center">
+                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        <span data-i18n="mod_subtitle">Procesado a nombre de MOLHA & SAFIE LTDA</span>
                     </div>
                     <div
-                        class="mt-6 flex items-center justify-center gap-2 text-slate-400 text-xs text-center leading-relaxed">
+                        class="mt-2 flex items-center justify-center gap-2 text-slate-400 text-xs text-center leading-relaxed">
                         <span class="material-symbols-outlined text-sm">bolt</span>
                         <span data-i18n="book_qr">Recibirás tu entrada con QR automáticamente por WhatsApp después del pago</span>
-                    </div>s del pago</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- ═══ VENUE ═══ -->
     <section class="py-24 px-6 bg-surface-dark" id="venue">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -290,6 +399,8 @@
             </div>
         </div>
     </section>
+
+    <!-- ═══ GALERÍA ═══ -->
     <section class="py-24 px-6" id="gallery">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
@@ -330,6 +441,8 @@
             </div>
         </div>
     </section>
+
+    <!-- ═══ SPONSORS / PARCEIROS ═══ -->
     <section class="py-24 px-6 bg-background-light dark:bg-background-dark">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
@@ -338,85 +451,43 @@
                 <h2 class="text-3xl font-black" data-i18n="sponsors_title">Auspician este Encuentro</h2>
             </div>
             <div class="space-y-16">
+                <!-- Platinum -->
                 <div>
                     <h4 class="text-center text-accent-gold font-bold mb-8 uppercase tracking-[0.2em] text-sm" data-i18n="sponsors_plat">Platinum
                     </h4>
-                    <div class="flex flex-wrap justify-center gap-12 opacity-80">
-                        <div
-                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 p-2">
-                            <img src="https://i.imgur.com/yVPTLof.png" alt="Bodega Premium" class="max-h-full max-w-full object-contain" />
+                    <div class="flex flex-wrap justify-center gap-12 items-center">
+                        <div class="h-20 w-56 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/30 p-4">
+                            <img src="https://i.imgur.com/yVPTLof.png" alt="Pizzorno Family Estates" class="max-h-full max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity" />
                         </div>
-                        <div
-                            class="h-16 w-48 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 p-2">
-                            <img src="https://i.imgur.com/pNOCaI2.png" alt="SenderosGroup" class="max-h-full max-w-full object-contain" />
+                        <div class="h-20 w-56 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/30 p-4">
+                            <img src="https://i.imgur.com/pNOCaI2.png" alt="Senderos Group" class="max-h-full max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity" />
                         </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                    <div class="text-center opacity-60">
-                        <h4 class="text-slate-500 font-bold mb-4 uppercase tracking-[0.1em] text-xs" data-i18n="sponsors_gold">Oro</h4>
-                        <div
-                            class="h-12 w-full bg-primary/10 rounded border border-primary/10 flex items-center justify-center text-xs">
-                            Partner Gourmet</div>
-                    </div>
-                    <div class="text-center opacity-60">
-                        <h4 class="text-slate-500 font-bold mb-4 uppercase tracking-[0.1em] text-xs" data-i18n="sponsors_gold">Oro</h4>
-                        <div
-                            class="h-12 w-full bg-primary/10 rounded border border-primary/10 flex items-center justify-center text-xs">
-                            Water Brand</div>
-                    </div>
-                    <div class="text-center opacity-60">
-                        <h4 class="text-slate-500 font-bold mb-4 uppercase tracking-[0.1em] text-xs" data-i18n="sponsors_silver">Plata</h4>
-                        <div
-                            class="h-12 w-full bg-primary/10 rounded border border-primary/10 flex items-center justify-center text-xs">
-                            Event Tech</div>
-                    </div>
-                    <div class="text-center opacity-60">
-                        <h4 class="text-slate-500 font-bold mb-4 uppercase tracking-[0.1em] text-xs" data-i18n="sponsors_silver">Plata</h4>
-                        <div
-                            class="h-12 w-full bg-primary/10 rounded border border-primary/10 flex items-center justify-center text-xs">
-                            Media Partner</div>
                     </div>
                 </div>
 
-                <!-- Parceiros Carrusel Infinito -->
-                <div class="mt-24 pt-12 border-t border-primary/10">
-                    <h4 class="text-center text-slate-500 font-bold mb-12 uppercase tracking-[0.2em] text-sm" data-i18n="sponsors_partners">Parceiros</h4>
-                    
-                    <div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-                        <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
-                            <li>
-                                <img src="https://i.imgur.com/jom8LFC.png" alt="Parceiro 1" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/yVPTLof.png" alt="Parceiro 2" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/pNOCaI2.png" alt="Parceiro 3" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/Lyby64x.png" alt="Parceiro 4" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                        </ul>
-                        <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll" aria-hidden="true">
-                            <li>
-                                <img src="https://i.imgur.com/jom8LFC.png" alt="Parceiro 1" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/yVPTLof.png" alt="Parceiro 2" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/pNOCaI2.png" alt="Parceiro 3" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                            <li>
-                                <img src="https://i.imgur.com/Lyby64x.png" alt="Parceiro 4" class="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-                            </li>
-                        </ul>
+                <!-- Parceiros — Carrusel Infinito (CSS puro) -->
+                <div>
+                    <h4 class="text-center text-slate-500 font-bold mb-8 uppercase tracking-[0.2em] text-sm" data-i18n="sponsors_partners">Parceiros</h4>
+                    <div class="overflow-hidden">
+                        <div class="carousel-track">
+                            <!-- Primera iteración -->
+                            <img src="https://i.imgur.com/jom8LFC.png" alt="EnoTurismo Uruguay" />
+                            <img src="https://i.imgur.com/yVPTLof.png" alt="Pizzorno Family Estates" />
+                            <img src="https://i.imgur.com/pNOCaI2.png" alt="Senderos Group" />
+                            <img src="https://i.imgur.com/Lyby64x.png" alt="Senderos Uruguay" />
+                            <!-- Segunda iteración (duplicado para loop seamless) -->
+                            <img src="https://i.imgur.com/jom8LFC.png" alt="EnoTurismo Uruguay" />
+                            <img src="https://i.imgur.com/yVPTLof.png" alt="Pizzorno Family Estates" />
+                            <img src="https://i.imgur.com/pNOCaI2.png" alt="Senderos Group" />
+                            <img src="https://i.imgur.com/Lyby64x.png" alt="Senderos Uruguay" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- ═══ TESTIMONIOS ═══ -->
     <section class="py-24 px-6 bg-surface-dark">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-3 gap-8">
@@ -459,119 +530,66 @@
             </div>
         </div>
     </section>
-    <footer class="bg-black py-16 px-6 border-t border-primary/20">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-12">
-            <div class="col-span-2">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="text-primary dark:text-accent-gold">
-                        <span class="material-symbols-outlined text-4xl">wine_bar</span>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="bg-background-dark pt-24 pb-12 border-t border-primary/20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-accent-gold text-3xl">wine_bar</span>
+                        <h2 class="text-2xl font-black uppercase">São Paulo Festival</h2>
                     </div>
-                    <div class="text-2xl font-extrabold tracking-tight uppercase">São Paulo Festival</div>
+                    <p class="text-slate-400 max-w-md leading-relaxed" data-i18n="foot_desc">
+                        Dedicados a traer las mejores experiencias culturales y gastronómicas del Río de la Plata a las
+                        principales capitales del mundo.
+                    </p>
                 </div>
-                <p class="text-slate-400 max-w-sm leading-relaxed" data-i18n="foot_desc">Dedicados a traer las mejores experiencias
-                    culturales y gastronómicas del Río de la Plata a las principales capitales del mundo.</p>
-            </div>
-            <div>
-                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-accent-gold" data-i18n="foot_contact">Contacto</h4>
-                <ul class="space-y-4 text-slate-400">
-                    <li class="flex items-center gap-3"><span
-                            class="material-symbols-outlined text-lg">mail</span>info@saopaulofestival.com</li>
-                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-lg">phone</span>+55
-                        11 9999-9999</li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-accent-gold" data-i18n="foot_follow">Síguenos</h4>
-                <div class="flex gap-4">
-                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors hover:scale-110"
-                        href="#"><span class="material-symbols-outlined">link</span></a>
-                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors hover:scale-110"
-                        href="#"><span class="material-symbols-outlined">share</span></a>
+                <div>
+                    <h5 class="font-bold mb-6 text-white uppercase tracking-widest text-sm" data-i18n="foot_contact">Contacto</h5>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">mail</span>
+                            info@saopaulofestival.com
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">phone</span>
+                            +55 (11) 98888-7777
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-6 text-white uppercase tracking-widest text-sm" data-i18n="foot_follow">Síguenos</h5>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary transition-all"
+                            href="#">
+                            <span class="material-symbols-outlined text-xl">share</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary transition-all"
+                            href="#">
+                            <span class="material-symbols-outlined text-xl">photo_camera</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary transition-all"
+                            href="#">
+                            <span class="material-symbols-outlined text-xl">public</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div
-            class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
-            <p data-i18n="foot_rights">© 2024 São Paulo Festival. Operado por MOLHA & SAFIE LTDA. Todos los derechos reservados.</p>
-            <div class="flex gap-6">
-                <a class="hover:text-accent-gold transition-colors" href="#" data-i18n="foot_terms">Términos y condiciones</a>
-                <a class="hover:text-accent-gold transition-colors" href="#" data-i18n="foot_priv">Política de privacidad</a>
+            <div
+                class="border-t border-primary/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+                <p data-i18n="foot_rights">© 2024 São Paulo Festival. Operado por MOLHA & SAFIE LTDA. Todos los derechos reservados.</p>
+                <div class="flex gap-8">
+                    <a class="hover:text-white transition-colors" href="#" data-i18n="foot_terms">Términos y condiciones</a>
+                    <a class="hover:text-white transition-colors" href="#" data-i18n="foot_priv">Política de privacidad</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-surface-dark border border-primary/30 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative transform scale-95 transition-transform duration-300" id="payment-modal-content">
-            <!-- Modal Header -->
-            <div class="flex items-start justify-between p-6 border-b border-primary/20 bg-background-dark">
-                <div>
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined text-accent-gold">lock</span>
-                        <span data-i18n="mod_title">Pago Seguro</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px] text-green-400">verified_user</span>
-                        <span data-i18n="mod_subtitle">Procesado a nombre de MOLHA & SAFIE LTDA</span>
-                    </p>
-                </div>
-                <button type="button" id="close-modal-btn" class="text-slate-400 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="p-6">
-                <form id="booking-form" class="space-y-4" onsubmit="initPayment(event)">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_name">Nombre completo</label>
-                        <input id="f-name" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: Tony Stark" required="" type="text" />
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_email">Correo electrónico</label>
-                        <input id="f-email" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: email@dominio.com" required="" type="email" />
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_country">País</label>
-                            <select id="f-country" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 appearance-none pointer-events-none opacity-80" required="">
-                                <option value="BR">🇧🇷 Brasil</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_phone">Teléfono / WhatsApp</label>
-                            <input id="f-phone" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="Ej: 11988887777" required="" type="tel" />
-                        </div>
-                    </div>
-                    
-                    <div id="cpf-container" class="transition-all duration-300">
-                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">CPF <span class="text-red-400">*</span></label>
-                        <input id="f-cpf" class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500" placeholder="000.000.000-00" type="text" required="" />
-                        <p class="text-[10px] text-slate-500 mt-1" data-i18n="mod_cpf_req">Requerido por procesador de pagos (Pagar.me Brasil).</p>
-                    </div>
-
-                    <div class="pt-4 border-t border-primary/20 mt-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-slate-400" data-i18n="book_total">Total a pagar:</span>
-                            <span class="text-2xl font-black text-accent-gold">R$<span id="modal-total-amount">5</span></span>
-                        </div>
-                        
-                        <div id="msg-container" class="hidden mb-4 p-3 rounded-lg text-sm font-medium">
-                            <p id="msg-text" class="text-center"></p>
-                        </div>
-                        
-                        <button id="pay-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-all uppercase tracking-widest shadow-lg flex items-center justify-center gap-2" type="submit">
-                            <span id="btn-txt" data-i18n="mod_btn">Pagar y Confirmar</span>
-                            <span id="spinner" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-<script src="config.js"></script>
-<script src="i18n.js"></script>
-<script src="app.js"></script>
+    <script src="config.js"></script>
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>

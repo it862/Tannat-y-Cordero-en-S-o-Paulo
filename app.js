@@ -58,58 +58,13 @@
     if (qty < C.MAX_QTY) { qty++; updateTotal(); }
   });
 
-  // ─── 3. Lógica del Modal y CPF ────────────────────────
-
-  var modal = document.getElementById('payment-modal');
-  var modalContent = document.getElementById('payment-modal-content');
-  var countrySelect = document.getElementById('f-country');
-  var cpfContainer = document.getElementById('cpf-container');
-  var cpfInput = document.getElementById('f-cpf');
-
-  function openModal() {
-    document.getElementById('modal-total-amount').textContent = (C.UNIT_PRICE * qty).toLocaleString('pt-BR');
-    modal.classList.remove('hidden');
-    // Pequeño delay para la animación de opacidad
-    setTimeout(function() {
-      modal.classList.remove('opacity-0');
-      modalContent.classList.remove('scale-95');
-    }, 10);
-  }
-
-  function closeModal() {
-    modal.classList.add('opacity-0');
-    modalContent.classList.add('scale-95');
-    setTimeout(function() {
-      modal.classList.add('hidden');
-    }, 300);
-  }
-
-  document.getElementById('open-modal-btn').addEventListener('click', openModal);
-  document.getElementById('close-modal-btn').addEventListener('click', closeModal);
-  
-  // Cerrar al clickear fuera del modal
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) closeModal();
-  });
-
-  // Mostrar/ocultar CPF basado en el país
-  countrySelect.addEventListener('change', function() {
-    if (this.value === 'BR') {
-      cpfContainer.classList.remove('hidden');
-      cpfInput.required = true;
-    } else {
-      cpfContainer.classList.add('hidden');
-      cpfInput.required = false;
-      cpfInput.value = '';
-    }
-  });
 
   // ─── 4. Envío de reserva → n8n ──────────────────────
 
   window.initPayment = function (e) {
     if (e) e.preventDefault();
 
-    // Referencias de UI del modal
+    // Referencias de UI del formulario
     var payBtn  = document.getElementById('pay-btn');
     var btnTxt  = document.getElementById('btn-txt');
     var spinner = document.getElementById('spinner');
