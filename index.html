@@ -137,7 +137,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-accent-gold">payments</span>
-                    <span class="font-bold text-2xl">R$150</span>
+                    <span class="font-bold text-2xl" id="hero-price">R$165</span>
                 </div>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-4">
@@ -243,8 +243,29 @@
                                 class="text-slate-300" data-i18n="price_incl4">Degustación de menú uruguayo</span>
                         </li>
                     </ul>
-                    <div class="text-5xl font-black text-white mb-2">R$150<span
-                            class="text-sm font-normal text-slate-400" data-i18n="price_per">/persona</span></div>
+                    <!-- Pré-Venda Badge -->
+                    <div id="presale-badge" class="hidden mb-4">
+                        <span class="inline-flex items-center gap-2 bg-accent-gold/20 border border-accent-gold/40 text-accent-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full">
+                            <span class="material-symbols-outlined text-sm">sell</span>
+                            <span data-i18n="presale_badge">PRÉ-VENDA · 40% OFF</span>
+                        </span>
+                    </div>
+
+                    <!-- Precio con tachado -->
+                    <div class="mb-1">
+                        <span id="old-price" class="hidden text-lg text-slate-500 line-through mr-3">R$165</span>
+                        <span class="text-5xl font-black text-white">R$<span id="main-price">165</span></span>
+                        <span class="text-sm font-normal text-slate-400" data-i18n="price_per">/persona</span>
+                    </div>
+
+                    <!-- Countdown -->
+                    <div id="presale-countdown" class="hidden mt-3 mb-4">
+                        <p class="text-sm text-slate-400">
+                            <span data-i18n="presale_ends">Pré-venda encerra em</span>
+                            <span id="countdown-timer" class="text-accent-gold font-mono font-bold ml-1">--d --h --m</span>
+                        </p>
+                    </div>
+
                     <p class="text-red-400 font-bold text-lg mt-2 animate-pulse"><span data-i18n="price_spots1">🔥 Quedan solo</span> <span
                             id="spots-left">47</span> <span data-i18n="price_spots2">lugares disponibles</span>
                     </p>

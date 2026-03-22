@@ -15,9 +15,11 @@ window.CONFIG = {
   EVENT_NAME: 'Tannat y Cordero en São Paulo',
 
   // ── Precios ────────────────────────────────
-  UNIT_PRICE: 5,          // Precio de prueba en frontend (R$)
-  CURRENCY: 'BRL',        // Moneda
-  MAX_QTY:    10,         // máximo de entradas por compra
+  FULL_PRICE: 165,                                      // Precio normal (R$)
+  PRESALE_DISCOUNT: 0.40,                               // 40% de descuento en pré-venda
+  PRESALE_DEADLINE: '2026-04-15T23:59:59-03:00',        // Fecha límite BRT
+  CURRENCY: 'BRL',
+  MAX_QTY:  10,
 
   // ── n8n backend ────────────────────────────
   N8N_WEBHOOK_URL: 'https://n8n.axion380.com.br/webhook/evento-reserva',

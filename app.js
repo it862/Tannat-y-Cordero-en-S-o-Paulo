@@ -5,8 +5,9 @@
  *
  *  Lógica de la landing page:
  *    1. Contador de cupos dinámico
- *    2. Selector de cantidad (+/−)
- *    3. Envío del formulario de reserva → n8n
+ *    2. Pré-venda: cálculo de precio + countdown
+ *    3. Selector de cantidad (+/−)
+ *    4. Envío del formulario de reserva → n8n
  *
  *  Toda la configuración se lee de window.CONFIG
  *  definido en config.js (debe cargarse antes).
@@ -36,7 +37,76 @@
 
   updateSpots();
 
-  // ─── 2. Selector de cantidad (+/−) ──────────────────
+  // ─── 2. Pré-venda: precio dinámico + countdown ──────
+
+  var deadline = new Date(C.PRESALE_DEADLINE);
+  var isPresale = new Date() < deadline;
+  var presalePrice = Math.round(C.FULL_PRICE * (1 - C.PRESALE_DISCOUNT));
+  var currentUnitPrice = isPresale ? presalePrice : C.FULL_PRICE;
+
+  // Exponer para que initPayment lo use
+  window._CURRENT_UNIT_PRICE = currentUnitPrice;
+
+  function applyPresaleUI() {
+    var badgeEl     = document.getElementById('presale-badge');
+    var oldPriceEl  = document.getElementById('old-price');
+    var mainPriceEl = document.getElementById('main-price');
+    var countdownEl = document.getElementById('presale-countdown');
+    var heroPrice   = document.getElementById('hero-price');
+
+    if (isPresale) {
+      // Mostrar badge y precio tachado
+      if (badgeEl)     badgeEl.classList.remove('hidden');
+      if (oldPriceEl)  { oldPriceEl.classList.remove('hidden'); oldPriceEl.textContent = 'R$' + C.FULL_PRICE; }
+      if (mainPriceEl) mainPriceEl.textContent = presalePrice;
+      if (heroPrice)   heroPrice.textContent = 'R$' + presalePrice;
+      if (countdownEl) countdownEl.classList.remove('hidden');
+
+      // Iniciar countdown
+      startCountdown();
+    } else {
+      // Precio normal sin badge
+      if (badgeEl)     badgeEl.classList.add('hidden');
+      if (oldPriceEl)  oldPriceEl.classList.add('hidden');
+      if (mainPriceEl) mainPriceEl.textContent = C.FULL_PRICE;
+      if (heroPrice)   heroPrice.textContent = 'R$' + C.FULL_PRICE;
+      if (countdownEl) countdownEl.classList.add('hidden');
+    }
+  }
+
+  function startCountdown() {
+    var timerEl = document.getElementById('countdown-timer');
+    if (!timerEl) return;
+
+    function tick() {
+      var now  = new Date();
+      var diff = deadline - now;
+
+      if (diff <= 0) {
+        // Pré-venda terminó, recargar para mostrar precio normal
+        location.reload();
+        return;
+      }
+
+      var days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var secs  = Math.floor((diff % (1000 * 60)) / 1000);
+
+      timerEl.textContent =
+        (days > 0 ? days + 'd ' : '') +
+        String(hours).padStart(2, '0') + 'h ' +
+        String(mins).padStart(2, '0') + 'm ' +
+        String(secs).padStart(2, '0') + 's';
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  applyPresaleUI();
+
+  // ─── 3. Selector de cantidad (+/−) ──────────────────
 
   var qty = 1;
 
@@ -44,7 +114,7 @@
     document.getElementById('qty-n').textContent      = qty;
     document.getElementById('f-quantity').value        = qty;
     document.getElementById('total-amount').textContent =
-      (C.UNIT_PRICE * qty).toLocaleString('pt-BR');
+      (currentUnitPrice * qty).toLocaleString('pt-BR');
   }
 
   // Inicializar precio en carga
@@ -57,7 +127,6 @@
   document.getElementById('q-plus').addEventListener('click', function () {
     if (qty < C.MAX_QTY) { qty++; updateTotal(); }
   });
-
 
   // ─── 4. Envío de reserva → n8n ──────────────────────
 
@@ -103,9 +172,9 @@
       email:      document.getElementById('f-email').value.trim(),
       phone:      document.getElementById('f-phone').value.trim(),
       country:    document.getElementById('f-country').value,
-      document:   document.getElementById('f-cpf').value.trim(), // Nuevo campo
+      document:   document.getElementById('f-cpf').value.trim(),
       quantity:   currentQty,
-      amount:     C.UNIT_PRICE * currentQty,
+      amount:     window._CURRENT_UNIT_PRICE * currentQty,
       currency:   C.CURRENCY,
     };
 
@@ -123,7 +192,6 @@
       })
       .then(function (result) {
         if (!result.ok || result.data.status === 'error') {
-          // Capturar mensaje de error específico si viene de Pagar.me via n8n
           var errorMsg = result.data.message || 'Error del servidor (' + result.status + ').';
           throw new Error(errorMsg);
         }
