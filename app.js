@@ -174,7 +174,7 @@
       country:    document.getElementById('f-country').value,
       document:   document.getElementById('f-cpf').value.trim(),
       quantity:   currentQty,
-      amount:     window._CURRENT_UNIT_PRICE * currentQty,
+      amount:     500,  // ⚠️ TEST: hardcoded R$5 (500 centavos) – REVERTIR a: window._CURRENT_UNIT_PRICE * currentQty
       currency:   C.CURRENCY,
     };
 
