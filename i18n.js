@@ -22,10 +22,10 @@ const i18nDist = {
     exp_title: "La Experiencia",
     exp_card1_title: "Encuentro gastronómico en São Paulo",
     exp_card1_desc: "Una experiencia exclusiva que fusiona tradición rioplatense con el dinamismo culinario de São Paulo.",
-    exp_card2_title: "Cordero a la parrilla",
+    exp_card2_title: "Carne a la parrilla",
     exp_card2_desc: "Cortes premium preparados a fuego lento con leña seleccionada, respetando la tradición ancestral del asado uruguayo.",
     exp_card3_title: "Experiencia gourmet",
-    exp_card3_desc: "Un menú de pasos diseñado por chefs especializados para maridar perfectamente cada sabor en un entorno sofisticado.",
+    exp_card3_desc: "Menú especializado para maridar perfectamente cada sabor en un entorno sofisticado.",
 
     // About Section
     about_title: "Exclusividad en cada detalle",
@@ -52,7 +52,7 @@ const i18nDist = {
 
     // Venue Section
     venue_title: "El Escenario",
-    venue_desc: "Nos encontramos en uno de los espacios más exclusivos de Itaim Bibi, diseñado para ofrecer una acústica perfecta y una atmósfera cálida que complementa la fuerza del Tannat.",
+    venue_desc: "Será en uno de los puntos de la ciudad más emblemáticos de São Paulo, diseñado para ofrecer una acústica perfecta y una atmósfera cálida que complementa la fuerza del Tannat.",
     venue_addr_t: "Dirección",
     venue_addr_v: "Rua Amauri, 123 - Itaim Bibi, São Paulo - SP",
     venue_park_t: "Estacionamiento",
@@ -122,10 +122,10 @@ const i18nDist = {
     exp_title: "A Experiência",
     exp_card1_title: "Encontro gastronômico em São Paulo",
     exp_card1_desc: "Uma experiência exclusiva que funde a tradição do Rio da Prata com o dinamismo culinário de São Paulo.",
-    exp_card2_title: "Cordeiro na brasa",
+    exp_card2_title: "Carne na brasa",
     exp_card2_desc: "Cortes premium preparados em fogo lento com lenha selecionada, respeitando a tradição ancestral do asado uruguaio.",
     exp_card3_title: "Experiência gourmet",
-    exp_card3_desc: "Um menu degustação desenhado por chefs especializados para harmonizar perfeitamente cada sabor em um ambiente sofisticado.",
+    exp_card3_desc: "Menu especializado para harmonizar perfeitamente cada sabor em um ambiente sofisticado.",
 
     // About Section
     about_title: "Exclusividade em cada detalhe",
@@ -152,7 +152,7 @@ const i18nDist = {
 
     // Venue Section
     venue_title: "O Cenário",
-    venue_desc: "Estaremos em um dos espaços mais exclusivos do Itaim Bibi, projetado para oferecer uma acústica perfeita e uma atmosfera acolhedora que complementa a força do Tannat.",
+    venue_desc: "Será em um dos pontos mais emblemáticos da cidade de São Paulo, projetado para oferecer uma acústica perfeita e uma atmosfera acolhedora que complementa a força do Tannat.",
     venue_addr_t: "Endereço",
     venue_addr_v: "Rua Amauri, 123 - Itaim Bibi, São Paulo - SP",
     venue_park_t: "Estacionamento",

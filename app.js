@@ -51,29 +51,38 @@
   window._CURRENT_UNIT_PRICE = currentUnitPrice;
 
   function applyPresaleUI() {
-    var badgeEl     = document.getElementById('presale-badge');
-    var oldPriceEl  = document.getElementById('old-price');
-    var mainPriceEl = document.getElementById('main-price');
-    var countdownEl = document.getElementById('presale-countdown');
-    var heroPrice   = document.getElementById('hero-price');
+    var badgeEl       = document.getElementById('presale-badge');
+    var oldPriceEl    = document.getElementById('old-price');
+    var mainPriceEl   = document.getElementById('main-price');
+    var countdownEl   = document.getElementById('presale-countdown');
+    var heroPrice     = document.getElementById('hero-price');
+    var heroPriceFull = document.getElementById('hero-price-full');
+    var heroWrapper   = document.getElementById('hero-price-wrapper');
 
     if (isPresale) {
       // Mostrar badge y precio tachado
-      if (badgeEl)     badgeEl.classList.remove('hidden');
-      if (oldPriceEl)  { oldPriceEl.classList.remove('hidden'); oldPriceEl.textContent = 'R$' + C.FULL_PRICE; }
-      if (mainPriceEl) mainPriceEl.textContent = presalePrice;
-      if (heroPrice)   heroPrice.textContent = 'R$' + presalePrice;
-      if (countdownEl) countdownEl.classList.remove('hidden');
+      if (badgeEl)       badgeEl.classList.remove('hidden');
+      if (oldPriceEl)    { oldPriceEl.classList.remove('hidden'); oldPriceEl.textContent = 'R$' + C.FULL_PRICE; }
+      if (mainPriceEl)   mainPriceEl.textContent = presalePrice;
+      if (heroPrice)     heroPrice.textContent = 'R$' + presalePrice;
+      if (heroPriceFull) { heroPriceFull.classList.remove('hidden'); heroPriceFull.textContent = 'R$' + C.FULL_PRICE; }
+      if (countdownEl)   countdownEl.classList.remove('hidden');
 
       // Iniciar countdown
       startCountdown();
     } else {
       // Precio normal sin badge
-      if (badgeEl)     badgeEl.classList.add('hidden');
-      if (oldPriceEl)  oldPriceEl.classList.add('hidden');
-      if (mainPriceEl) mainPriceEl.textContent = C.FULL_PRICE;
-      if (heroPrice)   heroPrice.textContent = 'R$' + C.FULL_PRICE;
-      if (countdownEl) countdownEl.classList.add('hidden');
+      if (badgeEl)       badgeEl.classList.add('hidden');
+      if (oldPriceEl)    oldPriceEl.classList.add('hidden');
+      if (mainPriceEl)   mainPriceEl.textContent = C.FULL_PRICE;
+      if (heroPrice)     heroPrice.textContent = 'R$' + C.FULL_PRICE;
+      if (heroPriceFull) heroPriceFull.classList.add('hidden');
+      if (countdownEl)   countdownEl.classList.add('hidden');
+      // Ocultar badge de pré-venda del hero
+      if (heroWrapper) {
+        var prevBadge = heroWrapper.querySelector('.bg-accent-gold\\/20');
+        if (prevBadge) prevBadge.classList.add('hidden');
+      }
     }
   }
 
