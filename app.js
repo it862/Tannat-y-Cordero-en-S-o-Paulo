@@ -37,11 +37,14 @@
 
   updateSpots();
 
+  // ─── 1b. Inicializar máscara de teléfono ───────────────
+  if (window.PhoneBR) window.PhoneBR.init();
+
   // ─── 2. Pré-venda: precio dinámico + countdown ──────
 
   var deadline = new Date(C.PRESALE_DEADLINE);
   var isPresale = new Date() < deadline;
-  var presalePrice = Math.round(C.FULL_PRICE * (1 - C.PRESALE_DISCOUNT));
+  var presalePrice = (C.PRESALE_PRICE !== undefined) ? C.PRESALE_PRICE : Math.round(C.FULL_PRICE * (1 - (C.PRESALE_DISCOUNT || 0)));
   var currentUnitPrice = isPresale ? presalePrice : C.FULL_PRICE;
 
   // Exponer para que initPayment lo use
@@ -128,6 +131,13 @@
     if (qty < C.MAX_QTY) { qty++; updateTotal(); }
   });
 
+  // ─── Helpers ─────────────────────────────────────────
+
+  function capitalize(s) {
+    if (!s) return '';
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+  }
+
   // ─── 4. Envío de reserva → n8n ──────────────────────
 
   window.initPayment = function (e) {
@@ -148,6 +158,38 @@
       msgText.textContent = msg;
     }
 
+    // ── Validaciones previas al envío ──
+    var fullName = document.getElementById('f-name').value.trim();
+    if (!fullName) {
+      showMessage('Informe seu nome completo', true);
+      msgContainer.classList.remove('hidden');
+      return;
+    }
+
+    var emailVal = document.getElementById('f-email').value.trim().toLowerCase();
+    if (!emailVal || emailVal.indexOf('@') === -1 || !/\.[a-z]{2,}$/i.test(emailVal)) {
+      showMessage('Informe um email válido', true);
+      msgContainer.classList.remove('hidden');
+      return;
+    }
+
+    // Validación de teléfono con PhoneBR
+    var phoneRaw = document.getElementById('f-phone').value;
+    var phoneResult = window.PhoneBR ? window.PhoneBR.normalize(phoneRaw) : { ok: true, phone: phoneRaw.replace(/\D/g, ''), error: '' };
+    if (!phoneResult.ok) {
+      showMessage(phoneResult.error, true);
+      msgContainer.classList.remove('hidden');
+      document.getElementById('f-phone').style.borderColor = 'rgba(248,113,113,0.6)';
+      return;
+    }
+
+    var currentQty = parseInt(document.getElementById('f-quantity').value, 10) || 1;
+    if (currentQty < 1 || currentQty > 10) {
+      showMessage('Quantidade deve ser entre 1 e 10', true);
+      msgContainer.classList.remove('hidden');
+      return;
+    }
+
     // Estado: cargando
     payBtn.disabled = true;
     payBtn.classList.add('opacity-70');
@@ -159,22 +201,20 @@
     msgContainer.classList.remove('hidden');
 
     // Datos del formulario
-    var fullName = document.getElementById('f-name').value.trim();
     var parts    = fullName.split(' ');
-    var firstName = parts[0];
-    var lastName  = parts.slice(1).join(' ') || '.';
-    var currentQty = parseInt(document.getElementById('f-quantity').value, 10) || 1;
+    var firstName = capitalize(parts[0]);
+    var lastName  = parts.slice(1).map(capitalize).join(' ') || '.';
 
     var payload = {
       event:      C.EVENT_ID,
       first_name: firstName,
       last_name:  lastName,
-      email:      document.getElementById('f-email').value.trim(),
-      phone:      document.getElementById('f-phone').value.trim(),
+      email:      emailVal,
+      phone:      phoneResult.phone,
       country:    document.getElementById('f-country').value,
-      document:   document.getElementById('f-cpf').value.trim(),
+      document:   document.getElementById('f-cpf').value.replace(/\D/g, ''),
       quantity:   currentQty,
-      amount:     500,  // ⚠️ TEST: hardcoded R$5 (500 centavos) – REVERTIR a: window._CURRENT_UNIT_PRICE * currentQty
+      amount:     window._CURRENT_UNIT_PRICE * currentQty * 100,  // en centavos
       currency:   C.CURRENCY,
     };
 

@@ -15,8 +15,8 @@ window.CONFIG = {
   EVENT_NAME: 'Tannat y Cordero en São Paulo',
 
   // ── Precios ────────────────────────────────
-  FULL_PRICE: 165,                                      // Precio normal (R$)
-  PRESALE_DISCOUNT: 0.40,                               // 40% de descuento en pré-venda
+  FULL_PRICE:       160,                                // Precio normal (R$)
+  PRESALE_PRICE:    99,                                 // Precio fijo de pré-venda (R$)
   PRESALE_DEADLINE: '2026-04-15T23:59:59-03:00',        // Fecha límite BRT
   CURRENCY: 'BRL',
   MAX_QTY:  10,

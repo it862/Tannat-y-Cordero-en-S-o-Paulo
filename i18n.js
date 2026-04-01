@@ -8,11 +8,11 @@ const i18nDist = {
     nav_reserve: "Reservar",
 
     // Hero
-    hero_sup: "Experiencia Gastronómica",
-    hero_title1: "Tannat y Cordero",
+    hero_sup: "São Paulo Festival – Experiencia Gastronómica",
+    hero_title1: "Tannat y Cordero Sabor de Uruguay",
     hero_title2: "en",
     hero_desc: "Una experiencia uruguaya única. Gastronomía, tradición y elegancia en el corazón de la ciudad.",
-    hero_date: "Próximamente 2024",
+    hero_date: "Próximamente 5 de Octubre 2026",
     hero_btn_res: "Reservar ahora",
     hero_btn_wsp: "Hablar por WhatsApp",
     hero_trust: "Pago seguro · Confirmación inmediata · Cupos limitados",
@@ -108,11 +108,11 @@ const i18nDist = {
     nav_reserve: "Reservar",
 
     // Hero
-    hero_sup: "Experiência Gastronômica",
-    hero_title1: "Tannat e Cordeiro",
+    hero_sup: "São Paulo Festival – Experiência Gastronômica",
+    hero_title1: "Tannat e Cordeiro Sabor do Uruguai",
     hero_title2: "em",
     hero_desc: "Uma experiência uruguaia única. Gastronomia, tradição e elegância no coração da cidade.",
-    hero_date: "Em breve 2024",
+    hero_date: "Em breve 5 de Outubro de 2026",
     hero_btn_res: "Reservar agora",
     hero_btn_wsp: "Falar no WhatsApp",
     hero_trust: "Pagamento seguro · Confirmação imediata · Vagas limitadas",

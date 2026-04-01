@@ -120,9 +120,9 @@
             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2HxiJyLNuOd4XM8gyssVdFnwog5I9LrZIJ_NPYsIuSji20p_Y2FsA2mzxjsAsGo92_VX-8qP9R4LwhzKeVFaQAGpZSxS6rXZ-6B4Ryrev5OwvU3zAd6rgNrmXMxAd9IOL3DnJgZ0qPrhaMrZYiSMI_mao3-ObxvTjZH0RmKlnQhxj_OTh9tkfU-GjbuWko5TJuinnawG3XmPuC7--HVuZWcZ52iyIXvrRaw5bofgAIHYc5HzSnATwu_vPIjJkklZH7NBky7DUFXg')">
         </div>
         <div class="relative z-20 text-center px-6 max-w-4xl">
-            <span class="inline-block text-accent-gold font-bold tracking-[0.3em] uppercase mb-4" data-i18n="hero_sup">Experiencia
-                Gastronómica</span>
-            <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight"><span class="whitespace-nowrap" data-i18n="hero_title1">Tannat y Cordero</span> <br /> <span data-i18n="hero_title2">en</span> <span
+            <span class="inline-block text-accent-gold font-bold tracking-[0.3em] uppercase mb-4" data-i18n="hero_sup">São Paulo Festival –
+                Experiencia Gastronómica</span>
+            <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight"><span class="whitespace-nowrap" data-i18n="hero_title1">Tannat y Cordero Sabor de Uruguay</span> <br /> <span data-i18n="hero_title2">en</span> <span
                     class="text-primary dark:text-accent-gold">São Paulo</span></h2>
             <p class="text-xl md:text-2xl font-light mb-10 text-slate-300 max-w-2xl mx-auto" data-i18n="hero_desc">Una experiencia uruguaya
                 única. Gastronomía, tradición y elegancia en el corazón de la ciudad.</p>
@@ -133,11 +133,11 @@
                 </div>
                 <div class="flex items-center gap-2 border-r border-white/20 pr-6">
                     <span class="material-symbols-outlined text-accent-gold">calendar_today</span>
-                    <span data-i18n="hero_date">Próximamente 2024</span>
+                    <span data-i18n="hero_date">Próximamente 5 de Octubre 2026</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-accent-gold">payments</span>
-                    <span class="font-bold text-2xl" id="hero-price">R$165</span>
+                    <span class="font-bold text-2xl" id="hero-price">R$99</span>
                 </div>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-4">
@@ -253,8 +253,8 @@
 
                     <!-- Precio con tachado -->
                     <div class="mb-1">
-                        <span id="old-price" class="hidden text-lg text-slate-500 line-through mr-3">R$165</span>
-                        <span class="text-5xl font-black text-white">R$<span id="main-price">165</span></span>
+                        <span id="old-price" class="hidden text-lg text-slate-500 line-through mr-3">R$160</span>
+                        <span class="text-5xl font-black text-white">R$<span id="main-price">99</span></span>
                         <span class="text-sm font-normal text-slate-400" data-i18n="price_per">/persona</span>
                     </div>
 
@@ -333,9 +333,11 @@
                             <div>
                                 <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider" data-i18n="mod_phone">Teléfono /
                                     WhatsApp</label>
-                                <input id="f-phone"
-                                    class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500"
-                                    placeholder="Ej: 11988887777" required="" type="tel" />
+                                <div class="relative" id="phone-wrapper">
+                                    <input id="f-phone"
+                                        class="w-full bg-background-dark border-primary/30 rounded-lg px-4 py-3 pr-10 focus:ring-accent-gold focus:border-accent-gold text-white placeholder-slate-500 transition-colors duration-200"
+                                        placeholder="(11) 9 1234-5678" required="" type="tel" autocomplete="tel" />
+                                </div>
                             </div>
                         </div>
 
@@ -608,6 +610,7 @@
 
     <script src="config.js"></script>
     <script src="i18n.js"></script>
+    <script src="phone-br.js"></script>
     <script src="app.js"></script>
 </body>
 
