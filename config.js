@@ -22,7 +22,7 @@ window.CONFIG = {
   MAX_QTY:  10,
 
   // ── n8n backend ────────────────────────────
-  N8N_WEBHOOK_URL: 'https://n8n.axion380.com.br/webhook/evento-reserva',
+  N8N_WEBHOOK_URL: 'https://n8n.sgituy.com/webhook/evento-reservasgituy',
 
   // ── Pagar.me (credenciales públicas) ───────
   PAGARME_ACCOUNT_ID: 'acc_bwqjx06carfnM5PJ',
